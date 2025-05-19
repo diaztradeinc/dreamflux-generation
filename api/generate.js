@@ -7,8 +7,8 @@ export default async function handler(req, res) {
 
   console.log("[REQUEST RECEIVED]:", req.body);
 
-  // Return a static test image to confirm end-to-end flow
+  // Return a new static test image from a reliable source
   return res.status(200).json({
-    image_url: "https://via.placeholder.com/512x512.png?text=Test+Image"
+    image_url: "https://placekitten.com/512/512"
   });
 }
