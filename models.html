@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Models</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { background: #000; color: #fff; font-family: sans-serif; padding: 2rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+    .card {
+      background: #111;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid #333;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .card:hover {
+      transform: scale(1.03);
+      border-color: #0ff;
+    }
+    .card img { width: 100%; display: block; }
+    .card .title {
+      background: rgba(0,0,0,0.6);
+      text-align: center;
+      color: #0ff;
+      font-weight: bold;
+      padding: 6px;
+    }
+  </style>
+</head>
+<body>
+<h2>Select a Model</h2>
+<div class="grid" id="modelGrid"></div>
+
+<script>
+  const models = [
+    { name: "DreamShaper", thumb: "https://modelfiles.ai-models.org/realistic/dreamshaper-v8-thumb.jpg" },
+    { name: "Deliberate", thumb: "https://modelfiles.ai-models.org/realistic/deliberate-v3-thumb.jpg" },
+    { name: "Juggernaut", thumb: "https://modelfiles.ai-models.org/realistic/juggernaut-v7-thumb.jpg" },
+    { name: "Realistic Vision", thumb: "https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" },
+    { name: "CyberRealistic", thumb: "https://modelfiles.ai-models.org/realistic/cyberrealistic-thumb.jpg" }
+  ];
+
+  const grid = document.getElementById("modelGrid");
+  models.forEach(model => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = \`
+      <img src="\${model.thumb}" />
+      <div class="title">\${model.name}</div>
+    \`;
+    div.onclick = () => {
+      localStorage.setItem("selectedModel", model.name);
+      localStorage.setItem("selectedImage", model.thumb);
+      window.location.href = "create.html";
+    };
+    grid.appendChild(div);
+  });
+</script>
+</body>
+</html>

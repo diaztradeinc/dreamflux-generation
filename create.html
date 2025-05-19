@@ -6,183 +6,31 @@
   <title>Create - DreamFlux</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body {
-      background: #000;
-      color: #fff;
-      font-family: sans-serif;
-      padding: 2rem;
+    body { background: #000; color: #fff; font-family: sans-serif; padding: 2rem; }
+    .model-btn {
+      display: flex; align-items: center;
+      background: #111; border: 2px solid #444;
+      padding: 10px 14px; border-radius: 12px;
+      cursor: pointer; gap: 10px;
     }
-
-    textarea {
-      width: 100%;
-      background: #111;
-      color: #0ff;
-      padding: 12px;
-      border-radius: 8px;
-      border: 2px solid #333;
-      margin-bottom: 1rem;
-      font-size: 1rem;
-    }
-
-    .model-select-button {
-      background: #111;
-      border: 2px solid #333;
-      border-radius: 12px;
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      transition: border-color 0.2s ease;
-      margin-bottom: 2rem;
-    }
-
-    .model-select-button:hover {
-      border-color: #0ff;
-    }
-
-    .model-select-button img {
-      width: 48px;
-      height: 48px;
-      border-radius: 8px;
-    }
-
-    .model-select-button span {
-      font-weight: bold;
-      color: #0ff;
-    }
-
-    .model-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: #000e;
-      z-index: 9999;
-      padding: 2rem;
-      overflow-y: auto;
-    }
-
-    .model-modal.active {
-      display: block;
-    }
-
-    .model-modal-close {
-      position: absolute;
-      top: 20px;
-      right: 24px;
-      font-size: 1.5rem;
-      color: #0ff;
-      cursor: pointer;
-    }
-
-    .model-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1rem;
-      margin-top: 60px;
-    }
-
-    .model-card {
-      background: #111;
-      border: 2px solid #333;
-      border-radius: 10px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-
-    .model-card:hover {
-      transform: scale(1.03);
-      border-color: #0ff;
-    }
-
-    .model-card img {
-      width: 100%;
-    }
-
-    .model-card .model-title {
-      background: rgba(0,0,0,0.6);
-      color: #0ff;
-      text-align: center;
-      padding: 6px;
-      font-weight: bold;
-    }
-
-    .start-button {
-      background: #0ff;
-      color: #000;
-      font-weight: bold;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .start-button:hover {
-      transform: scale(1.03);
-    }
+    .model-btn img { width: 48px; height: 48px; border-radius: 8px; }
+    .model-btn span { font-weight: bold; color: #0ff; }
   </style>
 </head>
 <body>
-
-<h2>Create</h2>
-
-<textarea placeholder="What do you dream of?"></textarea>
-
-<button class="model-select-button" id="modelSelectBtn">
+<h2>Model</h2>
+<a href="models.html" class="model-btn">
   <img id="modelThumb" src="https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" />
   <span id="modelName">Realistic Vision</span>
-</button>
-
-<button class="start-button">Start Drawing</button>
-
-<div class="model-modal" id="modelModal">
-  <div class="model-modal-close" onclick="closeModelModal()">✖</div>
-  <div class="model-grid" id="modelGrid"></div>
-</div>
+</a>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const models = [
-    { name: "DreamShaper", thumb: "https://modelfiles.ai-models.org/realistic/dreamshaper-v8-thumb.jpg" },
-    { name: "Deliberate", thumb: "https://modelfiles.ai-models.org/realistic/deliberate-v3-thumb.jpg" },
-    { name: "Juggernaut", thumb: "https://modelfiles.ai-models.org/realistic/juggernaut-v7-thumb.jpg" },
-    { name: "Realistic Vision", thumb: "https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" },
-    { name: "CyberRealistic", thumb: "https://modelfiles.ai-models.org/realistic/cyberrealistic-thumb.jpg" }
-  ];
-
-  const modelModal = document.getElementById("modelModal");
-  const modelGrid = document.getElementById("modelGrid");
-  const modelBtn = document.getElementById("modelSelectBtn");
-  const modelName = document.getElementById("modelName");
-  const modelThumb = document.getElementById("modelThumb");
-
-  modelBtn.addEventListener("click", () => {
-    modelGrid.innerHTML = "";
-    models.forEach(model => {
-      const div = document.createElement("div");
-      div.className = "model-card";
-      div.innerHTML = \`
-        <img src="\${model.thumb}" />
-        <div class="model-title">\${model.name}</div>
-      \`;
-      div.onclick = () => {
-        modelName.innerText = model.name;
-        modelThumb.src = model.thumb;
-        modelModal.classList.remove("active");
-      };
-      modelGrid.appendChild(div);
-    });
-    modelModal.classList.add("active");
+  document.addEventListener("DOMContentLoaded", () => {
+    const savedName = localStorage.getItem("selectedModel");
+    const savedThumb = localStorage.getItem("selectedImage");
+    if (savedName) document.getElementById("modelName").innerText = savedName;
+    if (savedThumb) document.getElementById("modelThumb").src = savedThumb;
   });
-});
-
-function closeModelModal() {
-  document.getElementById("modelModal").classList.remove("active");
-}
 </script>
-
 </body>
 </html>
