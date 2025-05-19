@@ -3,61 +3,105 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Models</title>
+  <title>Select a Model</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body { background: #000; color: #fff; font-family: sans-serif; padding: 2rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: sans-serif;
+      padding: 2rem;
+      margin: 0;
+    }
+
+    h2 {
+      color: #0ff;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
     .card {
       background: #111;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
-      border: 2px solid #333;
-      cursor: pointer;
+      border: 2px solid transparent;
       transition: transform 0.2s ease, border-color 0.2s ease;
+      cursor: pointer;
     }
+
     .card:hover {
-      transform: scale(1.03);
+      transform: scale(1.05);
       border-color: #0ff;
+      box-shadow: 0 0 12px rgba(0,255,255,0.3);
     }
-    .card img { width: 100%; display: block; }
-    .card .title {
-      background: rgba(0,0,0,0.6);
+
+    .card img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .title {
       text-align: center;
-      color: #0ff;
+      padding: 6px 8px;
       font-weight: bold;
-      padding: 6px;
+      background: rgba(0,0,0,0.6);
+      color: #0ff;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
+
 <h2>Select a Model</h2>
 <div class="grid" id="modelGrid"></div>
 
 <script>
-  const models = [
-    { name: "DreamShaper", thumb: "https://modelfiles.ai-models.org/realistic/dreamshaper-v8-thumb.jpg" },
-    { name: "Deliberate", thumb: "https://modelfiles.ai-models.org/realistic/deliberate-v3-thumb.jpg" },
-    { name: "Juggernaut", thumb: "https://modelfiles.ai-models.org/realistic/juggernaut-v7-thumb.jpg" },
-    { name: "Realistic Vision", thumb: "https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" },
-    { name: "CyberRealistic", thumb: "https://modelfiles.ai-models.org/realistic/cyberrealistic-thumb.jpg" }
-  ];
+const models = [
+  { name: "DreamShaper", thumb: "https://modelfiles.ai-models.org/realistic/dreamshaper-v8-thumb.jpg" },
+  { name: "Deliberate", thumb: "https://modelfiles.ai-models.org/realistic/deliberate-v3-thumb.jpg" },
+  { name: "Juggernaut", thumb: "https://modelfiles.ai-models.org/realistic/juggernaut-v7-thumb.jpg" },
+  { name: "Realistic Vision", thumb: "https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" },
+  { name: "EpicRealism", thumb: "https://modelfiles.ai-models.org/realistic/epicrealism-thumb.jpg" },
+  { name: "Absolute Reality", thumb: "https://modelfiles.ai-models.org/realistic/absolute-reality-thumb.jpg" },
+  { name: "CyberRealistic", thumb: "https://modelfiles.ai-models.org/realistic/cyberrealistic-thumb.jpg" },
+  { name: "A-Zovya Photoreal", thumb: "https://modelfiles.ai-models.org/realistic/a-zovya-photoreal-thumb.jpg" },
+  { name: "majicMIX realistic", thumb: "https://modelfiles.ai-models.org/realistic/majicmix-thumb.jpg" },
+  { name: "Anything V3", thumb: "https://modelfiles.ai-models.org/anime/anything-v3-thumb.jpg" },
+  { name: "Counterfeit", thumb: "https://modelfiles.ai-models.org/anime/counterfeit-thumb.jpg" },
+  { name: "PastelMix", thumb: "https://modelfiles.ai-models.org/anime/pastelmix-thumb.jpg" },
+  { name: "ReV Animated", thumb: "https://modelfiles.ai-models.org/realistic/rev-animated-thumb.jpg" },
+  { name: "Analog Madness", thumb: "https://modelfiles.ai-models.org/realistic/analog-madness-thumb.jpg" },
+  { name: "Protogen", thumb: "https://modelfiles.ai-models.org/realistic/protogen-thumb.jpg" },
+  { name: "MeinaMix", thumb: "https://modelfiles.ai-models.org/anime/meinamix-thumb.jpg" },
+  { name: "ChilloutMix", thumb: "https://modelfiles.ai-models.org/realistic/chilloutmix-thumb.jpg" },
+  { name: "AbyssOrangeMix3 (AOM3)", thumb: "https://modelfiles.ai-models.org/anime/abyssorangemix3-thumb.jpg" }
+];
 
-  const grid = document.getElementById("modelGrid");
-  models.forEach(model => {
-    const div = document.createElement("div");
-    div.className = "card";
-    div.innerHTML = \`
-      <img src="\${model.thumb}" />
-      <div class="title">\${model.name}</div>
-    \`;
-    div.onclick = () => {
-      localStorage.setItem("selectedModel", model.name);
-      localStorage.setItem("selectedImage", model.thumb);
-      window.location.href = "create.html";
-    };
-    grid.appendChild(div);
-  });
+const grid = document.getElementById("modelGrid");
+models.forEach(model => {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = \`
+    <img src="\${model.thumb}" alt="\${model.name}" />
+    <div class="title">\${model.name}</div>
+  \`;
+  card.onclick = () => {
+    localStorage.setItem("selectedModel", model.name);
+    localStorage.setItem("selectedImage", model.thumb);
+    window.location.href = "create.html";
+  };
+  grid.appendChild(card);
+});
 </script>
+
 </body>
 </html>
