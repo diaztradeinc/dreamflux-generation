@@ -49,7 +49,8 @@ export default async function handler(req, res) {
     console.log("[MODELSLAB RESPONSE]:", response.data);
     return res.status(200).json(response.data);
   } catch (err) {
-    console.error("[ERROR]:", err?.response?.data || err.message);
-    return res.status(500).json({ error: 'Image generation failed.' });
+    const errorData = err?.response?.data || err.message;
+    console.error("[MODELSLAB ERROR]:", errorData);
+    return res.status(500).json({ error: 'ModelsLab error', details: errorData });
   }
 }
