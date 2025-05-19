@@ -47,7 +47,6 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Missing MODELSLAB_API_KEY' });
   }
 
-  // Map to valid values
   model = modelMap[model] || model;
   sampler = samplerMap[sampler] || sampler;
 
@@ -78,8 +77,19 @@ export default async function handler(req, res) {
     console.log("[MODELSLAB RESPONSE]:", response.data);
     return res.status(200).json(response.data);
   } catch (err) {
-    const errorDetails = err?.response?.data || err.message;
+    const status = err?.response?.status;
+    const contentType = err?.response?.headers?.["content-type"];
+    let errorDetails = "Unknown error";
+
+    if (err?.response?.data && typeof err.response.data === "string" && contentType?.includes("text/html")) {
+      errorDetails = err.response.data;
+    } else if (err?.response?.data) {
+      errorDetails = err.response.data;
+    } else {
+      errorDetails = err.message;
+    }
+
     console.error("[MODELSLAB ERROR]:", errorDetails);
-    return res.status(500).json({ error: 'ModelsLab error', details: errorDetails });
+    return res.status(500).json({ error: 'ModelsLab error', details: errorDetails, status });
   }
 }
