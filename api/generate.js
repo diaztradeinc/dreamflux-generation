@@ -54,11 +54,16 @@ export default async function handler(req, res) {
     key: MODELSLAB_API_KEY,
     prompt,
     negative_prompt,
-    steps,
-    sampler,
-    cfg,
-    seed,
-    model
+    width: 512,
+    height: 512,
+    samples: 1,
+    safety_checker: true,
+    base64: false,
+    instant_response: false,
+    steps: steps || 30,
+    guidance_scale: cfg || 7,
+    seed: seed || null,
+    model_id: model
   };
 
   console.log("[NORMALIZED PAYLOAD]:", payload);
