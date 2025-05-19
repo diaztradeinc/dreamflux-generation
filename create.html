@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Model Button Picker</title>
+  <title>Create - DreamFlux</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
@@ -11,6 +11,17 @@
       color: #fff;
       font-family: sans-serif;
       padding: 2rem;
+    }
+
+    textarea {
+      width: 100%;
+      background: #111;
+      color: #0ff;
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #333;
+      margin-bottom: 1rem;
+      font-size: 1rem;
     }
 
     .model-select-button {
@@ -23,6 +34,7 @@
       gap: 10px;
       cursor: pointer;
       transition: border-color 0.2s ease;
+      margin-bottom: 2rem;
     }
 
     .model-select-button:hover {
@@ -95,15 +107,36 @@
       padding: 6px;
       font-weight: bold;
     }
+
+    .start-button {
+      background: #0ff;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .start-button:hover {
+      transform: scale(1.03);
+    }
   </style>
 </head>
 <body>
 
-<h2>Model</h2>
+<h2>Create</h2>
+
+<textarea placeholder="What do you dream of?"></textarea>
+
 <button class="model-select-button" id="modelSelectBtn">
   <img id="modelThumb" src="https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" />
   <span id="modelName">Realistic Vision</span>
 </button>
+
+<button class="start-button">Start Drawing</button>
 
 <div class="model-modal" id="modelModal">
   <div class="model-modal-close" onclick="closeModelModal()">✖</div>
@@ -111,44 +144,44 @@
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const models = [
-      { name: "DreamShaper", thumb: "https://modelfiles.ai-models.org/realistic/dreamshaper-v8-thumb.jpg" },
-      { name: "Deliberate", thumb: "https://modelfiles.ai-models.org/realistic/deliberate-v3-thumb.jpg" },
-      { name: "Juggernaut", thumb: "https://modelfiles.ai-models.org/realistic/juggernaut-v7-thumb.jpg" },
-      { name: "Realistic Vision", thumb: "https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" },
-      { name: "CyberRealistic", thumb: "https://modelfiles.ai-models.org/realistic/cyberrealistic-thumb.jpg" }
-    ];
+document.addEventListener("DOMContentLoaded", () => {
+  const models = [
+    { name: "DreamShaper", thumb: "https://modelfiles.ai-models.org/realistic/dreamshaper-v8-thumb.jpg" },
+    { name: "Deliberate", thumb: "https://modelfiles.ai-models.org/realistic/deliberate-v3-thumb.jpg" },
+    { name: "Juggernaut", thumb: "https://modelfiles.ai-models.org/realistic/juggernaut-v7-thumb.jpg" },
+    { name: "Realistic Vision", thumb: "https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" },
+    { name: "CyberRealistic", thumb: "https://modelfiles.ai-models.org/realistic/cyberrealistic-thumb.jpg" }
+  ];
 
-    const modelModal = document.getElementById("modelModal");
-    const modelGrid = document.getElementById("modelGrid");
-    const modelBtn = document.getElementById("modelSelectBtn");
-    const modelName = document.getElementById("modelName");
-    const modelThumb = document.getElementById("modelThumb");
+  const modelModal = document.getElementById("modelModal");
+  const modelGrid = document.getElementById("modelGrid");
+  const modelBtn = document.getElementById("modelSelectBtn");
+  const modelName = document.getElementById("modelName");
+  const modelThumb = document.getElementById("modelThumb");
 
-    modelBtn.addEventListener("click", () => {
-      modelGrid.innerHTML = "";
-      models.forEach(model => {
-        const div = document.createElement("div");
-        div.className = "model-card";
-        div.innerHTML = \`
-          <img src="\${model.thumb}" />
-          <div class="model-title">\${model.name}</div>
-        \`;
-        div.onclick = () => {
-          modelName.innerText = model.name;
-          modelThumb.src = model.thumb;
-          modelModal.classList.remove("active");
-        };
-        modelGrid.appendChild(div);
-      });
-      modelModal.classList.add("active");
+  modelBtn.addEventListener("click", () => {
+    modelGrid.innerHTML = "";
+    models.forEach(model => {
+      const div = document.createElement("div");
+      div.className = "model-card";
+      div.innerHTML = \`
+        <img src="\${model.thumb}" />
+        <div class="model-title">\${model.name}</div>
+      \`;
+      div.onclick = () => {
+        modelName.innerText = model.name;
+        modelThumb.src = model.thumb;
+        modelModal.classList.remove("active");
+      };
+      modelGrid.appendChild(div);
     });
+    modelModal.classList.add("active");
   });
+});
 
-  function closeModelModal() {
-    document.getElementById("modelModal").classList.remove("active");
-  }
+function closeModelModal() {
+  document.getElementById("modelModal").classList.remove("active");
+}
 </script>
 
 </body>
