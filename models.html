@@ -13,13 +13,11 @@
       padding: 2rem;
       margin: 0;
     }
-
     h2 {
       color: #0ff;
       text-align: center;
       margin-bottom: 2rem;
     }
-
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -27,7 +25,6 @@
       max-width: 1200px;
       margin: auto;
     }
-
     .card {
       background: #111;
       border-radius: 12px;
@@ -36,19 +33,16 @@
       transition: transform 0.2s ease, border-color 0.2s ease;
       cursor: pointer;
     }
-
     .card:hover {
       transform: scale(1.05);
       border-color: #0ff;
       box-shadow: 0 0 12px rgba(0,255,255,0.3);
     }
-
     .card img {
       width: 100%;
       display: block;
       object-fit: cover;
     }
-
     .title {
       text-align: center;
       padding: 6px 8px;
@@ -62,45 +56,86 @@
 <body>
 
 <h2>Select a Model</h2>
-<div class="grid" id="modelGrid"></div>
+<div class="grid">
+
+  <div class="card" onclick="selectModel('Anything V3', 'https://assets.modelslab.com/generations/2d46241c-8ba7-4d0f-98cb-e47698c7a133-0.png')">
+    <img src="https://assets.modelslab.com/generations/2d46241c-8ba7-4d0f-98cb-e47698c7a133-0.png" alt="Anything V3" />
+    <div class="title">Anything V3</div>
+  </div>
+    
+  <div class="card" onclick="selectModel('DreamShaper', 'https://assets.modelslab.com/generations/69111356-e73c-4c43-bf87-88799c621dce-0.png')">
+    <img src="https://assets.modelslab.com/generations/69111356-e73c-4c43-bf87-88799c621dce-0.png" alt="DreamShaper" />
+    <div class="title">DreamShaper</div>
+  </div>
+    
+  <div class="card" onclick="selectModel('Dream Shaper', 'https://assets.modelslab.com/generations/ec63bb7e-5ee6-4868-b39a-db59907cac14-0.png')">
+    <img src="https://assets.modelslab.com/generations/ec63bb7e-5ee6-4868-b39a-db59907cac14-0.png" alt="Dream Shaper" />
+    <div class="title">Dream Shaper</div>
+  </div>
+    
+  <div class="card" onclick="selectModel('Deliberate', 'https://assets.modelslab.com/generations/f890ec47-5c97-45bd-8018-a5beacf91cb1-0.png')">
+    <img src="https://assets.modelslab.com/generations/f890ec47-5c97-45bd-8018-a5beacf91cb1-0.png" alt="Deliberate" />
+    <div class="title">Deliberate</div>
+  </div>
+    
+  <div class="card" onclick="selectModel('ChilloutMix', 'https://assets.modelslab.com/generations/357e06e6-23d6-4aa2-8be6-ac9ff16d1514-0.png')">
+    <img src="https://assets.modelslab.com/generations/357e06e6-23d6-4aa2-8be6-ac9ff16d1514-0.png" alt="ChilloutMix" />
+    <div class="title">ChilloutMix</div>
+  </div>
+    
+  <div class="card" onclick="selectModel('ReV Animated', 'https://assets.modelslab.com/generations/790dd156-ddac-44e6-8f9d-47a658890768-0.png')">
+    <img src="https://assets.modelslab.com/generations/790dd156-ddac-44e6-8f9d-47a658890768-0.png" alt="ReV Animated" />
+    <div class="title">ReV Animated</div>
+  </div>
+    
+  <div class="card" onclick="selectModel('MeinaMix', 'https://assets.modelslab.com/generations/9ff07cda-7a11-4007-b0fa-d1bd17a428e3-0.png')">
+    <img src="https://assets.modelslab.com/generations/9ff07cda-7a11-4007-b0fa-d1bd17a428e3-0.png" alt="MeinaMix" />
+    <div class="title">MeinaMix</div>
+  </div>
+    
+  <div class="card" onclick="selectModel('ReVAnimated', 'https://assets.modelslab.com/generations/daf6f208-4a4e-4c98-9db8-8fb79c685664-0.png')">
+    <img src="https://assets.modelslab.com/generations/daf6f208-4a4e-4c98-9db8-8fb79c685664-0.png" alt="ReVAnimated" />
+    <div class="title">ReVAnimated</div>
+  </div>
+    
+  <div class="card" onclick="selectModel('CyberRealistic', 'https://assets.modelslab.com/generations/4eb9c21d-6a7a-438b-b978-6c1874f015df-0.png')">
+    <img src="https://assets.modelslab.com/generations/4eb9c21d-6a7a-438b-b978-6c1874f015df-0.png" alt="CyberRealistic" />
+    <div class="title">CyberRealistic</div>
+  </div>
+    
+  <div class="card" onclick="selectModel('AbsoluteReality', 'https://assets.modelslab.com/generations/0baa6f38-b078-41b8-84e1-021b08263c0d-0.png')">
+    <img src="https://assets.modelslab.com/generations/0baa6f38-b078-41b8-84e1-021b08263c0d-0.png" alt="AbsoluteReality" />
+    <div class="title">AbsoluteReality</div>
+  </div>
+    
+  <div class="card" onclick="selectModel('MajicMix Realistic', 'https://assets.modelslab.com/generations/d02a4d21-4717-45e8-934a-a9ca2eaea54d-0.png')">
+    <img src="https://assets.modelslab.com/generations/d02a4d21-4717-45e8-934a-a9ca2eaea54d-0.png" alt="MajicMix Realistic" />
+    <div class="title">MajicMix Realistic</div>
+  </div>
+    
+  <div class="card" onclick="selectModel('EpiCRealism', 'https://assets.modelslab.com/generations/1d3af103-e9c7-4c06-9b23-84f028585e83-0.png')">
+    <img src="https://assets.modelslab.com/generations/1d3af103-e9c7-4c06-9b23-84f028585e83-0.png" alt="EpiCRealism" />
+    <div class="title">EpiCRealism</div>
+  </div>
+    
+  <div class="card" onclick="selectModel('Realistic Vision', 'https://assets.modelslab.com/generations/ecab6544-7a27-45fa-9cc9-c336fd115339-0.png')">
+    <img src="https://assets.modelslab.com/generations/ecab6544-7a27-45fa-9cc9-c336fd115339-0.png" alt="Realistic Vision" />
+    <div class="title">Realistic Vision</div>
+  </div>
+    
+  <div class="card" onclick="selectModel('juggernaut', 'https://assets.modelslab.com/generations/429d90ad-7740-449c-b21b-011aeab9d198-0.png')">
+    <img src="https://assets.modelslab.com/generations/429d90ad-7740-449c-b21b-011aeab9d198-0.png" alt="juggernaut" />
+    <div class="title">juggernaut</div>
+  </div>
+    
+</div>
 
 <script>
-const models = [
-  { name: "DreamShaper", thumb: "https://modelfiles.ai-models.org/realistic/dreamshaper-v8-thumb.jpg" },
-  { name: "Deliberate", thumb: "https://modelfiles.ai-models.org/realistic/deliberate-v3-thumb.jpg" },
-  { name: "Juggernaut", thumb: "https://modelfiles.ai-models.org/realistic/juggernaut-v7-thumb.jpg" },
-  { name: "Realistic Vision", thumb: "https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" },
-  { name: "EpicRealism", thumb: "https://modelfiles.ai-models.org/realistic/epicrealism-thumb.jpg" },
-  { name: "Absolute Reality", thumb: "https://modelfiles.ai-models.org/realistic/absolute-reality-thumb.jpg" },
-  { name: "CyberRealistic", thumb: "https://modelfiles.ai-models.org/realistic/cyberrealistic-thumb.jpg" },
-  { name: "A-Zovya Photoreal", thumb: "https://modelfiles.ai-models.org/realistic/a-zovya-photoreal-thumb.jpg" },
-  { name: "majicMIX realistic", thumb: "https://modelfiles.ai-models.org/realistic/majicmix-thumb.jpg" },
-  { name: "Anything V3", thumb: "https://modelfiles.ai-models.org/anime/anything-v3-thumb.jpg" },
-  { name: "Counterfeit", thumb: "https://modelfiles.ai-models.org/anime/counterfeit-thumb.jpg" },
-  { name: "PastelMix", thumb: "https://modelfiles.ai-models.org/anime/pastelmix-thumb.jpg" },
-  { name: "ReV Animated", thumb: "https://modelfiles.ai-models.org/realistic/rev-animated-thumb.jpg" },
-  { name: "Analog Madness", thumb: "https://modelfiles.ai-models.org/realistic/analog-madness-thumb.jpg" },
-  { name: "Protogen", thumb: "https://modelfiles.ai-models.org/realistic/protogen-thumb.jpg" },
-  { name: "MeinaMix", thumb: "https://modelfiles.ai-models.org/anime/meinamix-thumb.jpg" },
-  { name: "ChilloutMix", thumb: "https://modelfiles.ai-models.org/realistic/chilloutmix-thumb.jpg" },
-  { name: "AbyssOrangeMix3 (AOM3)", thumb: "https://modelfiles.ai-models.org/anime/abyssorangemix3-thumb.jpg" }
-];
-
-const grid = document.getElementById("modelGrid");
-models.forEach(model => {
-  const card = document.createElement("div");
-  card.className = "card";
-  card.innerHTML = \`
-    <img src="\${model.thumb}" alt="\${model.name}" />
-    <div class="title">\${model.name}</div>
-  \`;
-  card.onclick = () => {
-    localStorage.setItem("selectedModel", model.name);
-    localStorage.setItem("selectedImage", model.thumb);
-    window.location.href = "create.html";
-  };
-  grid.appendChild(card);
-});
+function selectModel(name, thumb) {
+  localStorage.setItem("selectedModel", name);
+  localStorage.setItem("selectedImage", thumb);
+  window.location.href = "create.html";
+}
 </script>
 
 </body>
