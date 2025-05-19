@@ -261,6 +261,7 @@
 
 
 
+
 <script>
   async function startDrawing() {
     const model = localStorage.getItem("selectedModel") || "Realistic Vision";
@@ -278,7 +279,7 @@
     btn.innerText = "Generating...";
 
     try {
-      const res = await fetch("https://your-backend.up.railway.app/generate", {
+      const res = await fetch("https://dreamflux-pro-backend-production.up.railway.app/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
@@ -310,5 +311,6 @@
   });
 </script>
 </body>
+
 
 </html>
