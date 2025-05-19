@@ -260,6 +260,7 @@
 </div>
 
 
+
 <script>
   async function startDrawing() {
     const model = localStorage.getItem("selectedModel") || "Realistic Vision";
@@ -270,40 +271,24 @@
     const cfg = parseFloat(document.querySelector("input[value='5.0']")?.value || "5.0");
     const seed = document.querySelector("input[placeholder='Random']")?.value || null;
 
-    const body = {
-      model,
-      prompt,
-      negative_prompt,
-      steps,
-      sampler,
-      cfg,
-      seed
-    };
+    const body = { model, prompt, negative_prompt, steps, sampler, cfg, seed };
 
     const btn = document.querySelector(".start-button");
     btn.disabled = true;
     btn.innerText = "Generating...";
 
     try {
-      const res = await fetch("/api/generate", {
+      const res = await fetch("https://your-backend.up.railway.app/generate", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
       });
 
       const data = await res.json();
-      console.log("Generation result:", data);
-
-      if (data && data.image_url) {
-        const preview = document.createElement("img");
-        preview.src = data.image_url;
-        preview.style.maxWidth = "100%";
-        preview.style.marginTop = "1rem";
-        document.querySelector(".tool-section").appendChild(preview);
+      if (data.image_url) {
+        window.location.href = "/viewer.html?url=" + encodeURIComponent(data.image_url);
       } else {
-        alert("No image received. Check inputs or model availability.");
+        alert("No image returned.");
       }
     } catch (err) {
       console.error("API error:", err);
@@ -316,9 +301,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     const drawBtn = document.querySelector(".start-button");
-    if (drawBtn) {
-      drawBtn.addEventListener("click", startDrawing);
-    }
+    if (drawBtn) drawBtn.addEventListener("click", startDrawing);
 
     const model = localStorage.getItem("selectedModel");
     const thumb = localStorage.getItem("selectedImage");
@@ -327,4 +310,5 @@
   });
 </script>
 </body>
+
 </html>
