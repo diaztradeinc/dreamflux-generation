@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DreamFlux - Create</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { background: #000; color: #fff; font-family: sans-serif; padding: 1rem; margin: 0; }
+    #selectedModelBox {
+      display: flex; align-items: center;
+      background: #111; border: 2px solid #444;
+      padding: 10px; border-radius: 12px; cursor: pointer;
+    }
+    #selectedModelBox:hover {
+      border-color: #0ff;
+    }
+    #selectedModelBox img {
+      width: 48px; height: 48px; border-radius: 8px; margin-right: 10px;
+    }
+    .model-picker {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000d;
+      z-index: 9999;
+      overflow-y: auto;
+      padding: 2rem;
+    }
+    .model-picker.active {
+      display: block;
+    }
+    .model-picker-close {
+      position: absolute;
+      top: 16px;
+      right: 24px;
+      font-size: 1.5rem;
+      color: #0ff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .model-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+      max-width: 1200px;
+      margin: auto;
+      padding-top: 60px;
+    }
+    .model-grid-item {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      background: #111;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    .model-grid-item:hover {
+      transform: scale(1.03);
+      border-color: #0ff;
+      box-shadow: 0 0 12px rgba(0,255,255,0.2);
+    }
+    .model-grid-item img {
+      width: 100%;
+      display: block;
+    }
+    .model-grid-item .model-title {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.6);
+      color: #0ff;
+      text-align: center;
+      font-weight: bold;
+      padding: 6px 0;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Model</h2>
+<div id="selectedModelBox">
+  <img id="modelThumb" src="https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" />
+  <div id="modelName">Realistic Vision</div>
+</div>
+
+<div class="model-picker" id="modelPicker">
+  <div class="model-picker-close" onclick="closeModelPicker()">✖</div>
+  <div class="model-picker-grid" id="modelPickerGrid"></div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const models = [
+    { name: "DreamShaper", thumb: "https://modelfiles.ai-models.org/realistic/dreamshaper-v8-thumb.jpg" },
+    { name: "Deliberate", thumb: "https://modelfiles.ai-models.org/realistic/deliberate-v3-thumb.jpg" },
+    { name: "Juggernaut", thumb: "https://modelfiles.ai-models.org/realistic/juggernaut-v7-thumb.jpg" },
+    { name: "Realistic Vision", thumb: "https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" },
+    { name: "CyberRealistic", thumb: "https://modelfiles.ai-models.org/realistic/cyberrealistic-thumb.jpg" }
+  ];
+
+  const picker = document.getElementById("modelPicker");
+  const grid = document.getElementById("modelPickerGrid");
+  const box = document.getElementById("selectedModelBox");
+  const nameField = document.getElementById("modelName");
+  const thumb = document.getElementById("modelThumb");
+
+  box.addEventListener("click", () => {
+    grid.innerHTML = "";
+    models.forEach(model => {
+      const div = document.createElement("div");
+      div.className = "model-grid-item";
+      div.innerHTML = \`
+        <img src="\${model.thumb}" />
+        <div class="model-title">\${model.name}</div>
+      \`;
+      div.onclick = () => {
+        nameField.innerText = model.name;
+        thumb.src = model.thumb;
+        picker.classList.remove("active");
+      };
+      grid.appendChild(div);
+    });
+    picker.classList.add("active");
+  });
+});
+
+function closeModelPicker() {
+  document.getElementById("modelPicker").classList.remove("active");
+}
+</script>
+
+</body>
+</html>
