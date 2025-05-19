@@ -32,18 +32,23 @@
 
 
 
+
+
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  const model = localStorage.getItem("selectedModel") || "Realistic Vision";
+  const thumb = localStorage.getItem("selectedImage");
+
+  if (model) document.getElementById("modelName").innerText = model;
+  if (thumb) document.getElementById("modelThumb").src = thumb;
+
   const btn = document.querySelector(".start-button");
   if (!btn) return;
 
   btn.addEventListener("click", async () => {
-    const model = localStorage.getItem("selectedModel") || "Realistic Vision";
     const prompt = document.querySelector("textarea")?.value || "";
-    const body = {
-      model,
-      prompt
-    };
+    const payload = { model, prompt };
 
     btn.disabled = true;
     btn.innerText = "Generating...";
@@ -52,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (data.image_url) {
@@ -62,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (err) {
       console.error(err);
-      alert("Error generating image.");
+      alert("Generation error.");
     }
 
     btn.disabled = false;
