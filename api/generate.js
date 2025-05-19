@@ -1,5 +1,30 @@
 import axios from 'axios';
 
+const samplerMap = {
+  "Euler A": "euler_a",
+  "DDIM": "ddim",
+  "Heun": "heun",
+  "DPM++ 2M": "dpmpp_2m"
+};
+
+const modelMap = {
+  "Realistic Vision": "realistic-vision-v51",
+  "Deliberate": "deliberate-v2",
+  "DreamShaper": "dreamshaper-v8",
+  "MeinaMix": "meinamix",
+  "Protogen": "protogen-x3.4",
+  "ReV Animated": "rev-animated",
+  "PastelMix": "pastelmix",
+  "Counterfeit": "counterfeit-v30",
+  "Analog Madness": "analog-madness",
+  "Absolute Reality": "absolute-reality-v1",
+  "EpicRealism": "epicrealism",
+  "CyberRealistic": "cyberrealistic",
+  "AbyssOrangeMix3 (AOM3)": "aom3",
+  "ChilloutMix": "chilloutmix",
+  "Anything V3": "anything-v3"
+};
+
 export default async function handler(req, res) {
   console.log("[FUNCTION HIT] /api/generate.js");
 
@@ -7,7 +32,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Only POST allowed' });
   }
 
-  const {
+  let {
     prompt,
     negative_prompt,
     steps,
@@ -22,6 +47,10 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Missing MODELSLAB_API_KEY' });
   }
 
+  // Map to valid values
+  model = modelMap[model] || model;
+  sampler = samplerMap[sampler] || sampler;
+
   const payload = {
     key: MODELSLAB_API_KEY,
     prompt,
@@ -33,7 +62,7 @@ export default async function handler(req, res) {
     model
   };
 
-  console.log("[REQUEST PAYLOAD]:", payload);
+  console.log("[NORMALIZED PAYLOAD]:", payload);
 
   try {
     const response = await axios.post(
