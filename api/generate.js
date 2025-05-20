@@ -26,60 +26,67 @@ const modelMap = {
 };
 
 export default async function handler(req, res) {
-  console.log("[FUNCTION HIT] /api/generate.js");
+  console.log("[🔧] /api/generate triggered");
 
   if (req.method !== 'POST') {
+    console.warn("[❌] Invalid method:", req.method);
     return res.status(405).json({ error: 'Only POST allowed' });
   }
 
-  let {
-    prompt,
-    negative_prompt,
-    steps,
-    sampler,
-    cfg,
-    seed,
-    model
-  } = req.body;
-
-  const MODELSLAB_API_KEY = process.env.MODELSLAB_API_KEY;
-  if (!MODELSLAB_API_KEY) {
-    return res.status(500).json({ error: 'Missing MODELSLAB_API_KEY' });
-  }
-
-  model = modelMap[model] || model;
-  sampler = samplerMap[sampler] || sampler;
-
-  const payload = {
-    key: MODELSLAB_API_KEY,
-    prompt,
-    negative_prompt,
-    width: 512,
-    height: 512,
-    samples: 1,
-    safety_checker: true,
-    base64: false,
-    instant_response: false,
-    steps: steps || 30,
-    guidance_scale: cfg || 7,
-    seed: seed || null,
-    model_id: model
-  };
-
-  console.log("[NORMALIZED PAYLOAD]:", payload);
-
   try {
+    const {
+      prompt,
+      negative_prompt,
+      width,
+      height,
+      samples,
+      steps,
+      sampler,
+      cfg,
+      seed,
+      safety_checker,
+      base64,
+      instant_response,
+      model
+    } = req.body;
+
+    console.log("[✅] Received POST payload");
+
+    const MODELSLAB_API_KEY = process.env.MODELSLAB_API_KEY;
+    if (!MODELSLAB_API_KEY) {
+      console.error("[❌] Missing MODELSLAB_API_KEY");
+      return res.status(500).json({ error: 'Missing MODELSLAB_API_KEY' });
+    }
+
+    const resolvedModel = modelMap[model] || model;
+    const resolvedSampler = samplerMap[sampler] || sampler;
+
+    const payload = {
+      key: MODELSLAB_API_KEY,
+      prompt,
+      negative_prompt,
+      width: parseInt(width),
+      height: parseInt(height),
+      samples: parseInt(samples),
+      steps: parseInt(steps),
+      guidance_scale: parseFloat(cfg),
+      seed,
+      safety_checker,
+      base64,
+      instant_response,
+      model_id: resolvedModel,
+      sampler: resolvedSampler
+    };
+
+    console.log("[📦] Sending payload to ModelsLab:", payload);
+
     const response = await axios.post(
       "https://modelslab.com/api/v6/realtime/text2img",
       payload,
-      {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }
+      { headers: { "Content-Type": "application/json" } }
     );
 
-    console.log("[MODELSLAB RESPONSE]:", response.data);
+    console.log("[✅] ModelsLab API response received");
     return res.status(200).json(response.data);
   } catch (err) {
     const status = err?.response?.status;
@@ -94,7 +101,7 @@ export default async function handler(req, res) {
       errorDetails = err.message;
     }
 
-    console.error("[MODELSLAB ERROR]:", errorDetails);
+    console.error("[💥] API Error:", errorDetails);
     return res.status(500).json({ error: 'ModelsLab error', details: errorDetails, status });
   }
 }
