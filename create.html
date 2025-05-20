@@ -1,330 +1,73 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create - DreamFlux</title>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DreamFlux - Create</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
-</head><body>
+</head>
+<body class="white-theme">
 
-<nav class="bottom-nav">
-  <a href="index.html"><i class="icon-home"></i></a>
-  <a href="create.html" class="active"><i class="icon-grid"></i></a>
-  <a href="#"><i class="icon-brush"></i></a>
-  <a href="settings.html"><i class="icon-settings"></i></a>
-  <a href="profile.html"><i class="icon-user"></i></a>
+<nav class="navbar">
+  <a href="create.html">Create</a>
+  <a href="profile.html">Profile</a>
+  <a href="settings.html">Settings</a>
 </nav>
 
-<div class="model-select-bar" id="modelBar">
-  <button onclick="selectModelTab('sd15')" class="selected">SD1.5</button>
-  <button onclick="selectModelTab('sdxl')">SDXL</button>
-  <button onclick="selectModelTab('flux')">Flux</button>
-  <button onclick="selectModelTab('sd35')">SD3.5</button>
+<div class="tab-bar">
+  <button class="tab-btn" data-category="sd15">SD 1.5</button>
+  <button class="tab-btn" data-category="sdxl">SDXL</button>
+  <button class="tab-btn" data-category="flux">Flux</button>
+  <button class="tab-btn" data-category="sd3">SD 3.5</button>
 </div>
 
-<!-- SD1.5 Section Inserted Here -->
-
-<style>
-  .tool-section {
-    padding: 1rem;
-    color: #fff;
-  }
-
-  .toggle-bar {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .toggle-bar button {
-    flex: 1;
-    padding: 0.75rem;
-    font-weight: bold;
-    border-radius: 10px;
-    border: none;
-    background: #222;
-    color: #ccc;
-    transition: background 0.2s ease;
-  }
-
-  .toggle-bar button.active {
-    background: #FFD600;
-    color: black;
-  }
-
-  .canvas-mode {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(to right, #CFFFC8, #F9EBD5);
-    color: black;
-    padding: 12px 18px;
-    border-radius: 12px;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-  }
-
-  .form-block {
-    margin-bottom: 1.25rem;
-  }
-
-  .form-block label {
-    display: block;
-    font-size: 0.9rem;
-    margin-bottom: 0.4rem;
-    color: #aaa;
-  }
-
-  .form-block input,
-  .form-block textarea,
-  .form-block select {
-    width: 100%;
-    padding: 0.75rem;
-    border-radius: 10px;
-    border: none;
-    background: #1c1c1c;
-    color: #eee;
-    font-size: 0.95rem;
-  }
-
-  .mode-tabs {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    margin: 1rem 0;
-  }
-
-  .mode-tabs button {
-    padding: 10px 16px;
-    border-radius: 8px;
-    background: #222;
-    color: #aaa;
-    border: none;
-    font-weight: bold;
-    flex-shrink: 0;
-  }
-
-  .mode-tabs button.active {
-    background: #FFD600;
-    color: black;
-  }
-
-  .start-button {
-    width: 100%;
-    padding: 1rem;
-    background: #FFD600;
-    color: black;
-    border: none;
-    border-radius: 12px;
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-top: 2rem;
-    box-shadow: 0 4px 8px rgba(255,255,0,0.3);
-  }
-
-  .advanced-options {
-    margin-top: 1.5rem;
-    display: none;
-  }
-
-  .advanced-options.open {
-    display: block;
-  }
-
-  .advanced-toggle {
-    text-align: center;
-    color: #0ff;
-    margin-top: 1rem;
-    cursor: pointer;
-  }
-
-</style>
-
-<div id="sd15" class="model-section active tool-section">
-  <div class="toggle-bar">
-    <button class="active">Image</button>
-    <button>Video</button>
+<!-- Model Selection Modal -->
+<div id="modelModal" class="modal hidden">
+  <div class="modal-header">
+    <span>Select a Model</span>
+    <button id="closeModelModal">×</button>
   </div>
-
-  <div class="canvas-mode">
-    <span>Canvas mode</span>
-    <a href="#" style="color: black; font-size: 0.85rem;">Tutorial</a>
-  </div>
-
-  
-<div class="form-block">
-  <label>Model</label>
-  <a href="models.html" class="model-select-button" style="display:flex; align-items:center; background:#111; border:2px solid #444; padding:10px 14px; border-radius:12px; cursor:pointer; gap:10px;">
-    <img id="modelThumb" src="https://modelfiles.ai-models.org/realistic/realistic-vision-v51-thumb.jpg" style="width:48px; height:48px; border-radius:8px;" />
-    <span id="modelName" style="font-weight:bold; color:#0ff;">Realistic Vision</span>
-  </a>
+  <div id="modelCards" class="model-grid"></div>
 </div>
 
-
-  <div class="form-block">
-    <label>Prompt</label>
-    <textarea placeholder="What do you dream of?"></textarea>
-  </div>
-
-  <div class="form-block">
-    <label>Styles</label>
-    <input type="text" placeholder="Choose your styles" />
-  </div>
-
-  <div class="form-block">
-    <label>Negative Prompt</label>
-    <textarea placeholder="What do you want to exclude?"></textarea>
-  </div>
-
-  <div class="form-block">
-    <label>Negative Embeddings</label>
-    <input type="text" placeholder="2 selected" disabled />
-  </div>
-
-  <div class="form-block">
-    <label>Aspect Ratio</label>
-    <select>
-      <option>9:16</option>
-      <option>1:1</option>
-      <option>4:3</option>
-    </select>
-  </div>
-
-  <label style="font-size: 0.9rem; color: #bbb;">Mode</label>
-  <div class="mode-tabs">
-    <button class="active">Text to Image</button>
-    <button>Image to Image</button>
-    <button>Inpaint</button>
-    <button>Outpaint</button>
-    <button>Sketch</button>
-  </div>
-
-  <div class="form-block">
-    <label>Control Layer</label>
-    <input type="text" placeholder="+" />
-  </div>
-
-  <div class="form-block">
-    <label>1.5x High-Res</label>
-    <input type="checkbox" checked />
-  </div>
-
-  <div class="form-block">
-    <label>Image Prompt</label>
-    <input type="file" />
-  </div>
-
-  <div class="form-block">
-    <label>Restore Faces</label>
-    <input type="checkbox" checked />
-  </div>
-
-  <div class="form-block">
-    <label>Seed</label>
-    <input type="text" placeholder="Random" />
-  </div>
-
-  <div class="form-block">
-    <label>Save to</label>
-    <input type="text" placeholder="None" />
-  </div>
-
-  <div class="advanced-toggle" onclick="toggleAdvancedOptions()">Advanced Options</div>
-  <div class="advanced-options" id="advOptions">
-    <div class="form-block">
-      <label>Sampling Steps</label>
-      <input type="number" value="40" />
-    </div>
-    <div class="form-block">
-      <label>Sampling Method</label>
-      <input type="text" value="Euler A" />
-    </div>
-    <div class="form-block">
-      <label>Guidance Scale</label>
-      <input type="number" value="5.0" step="0.1" />
-    </div>
-    <div class="form-block">
-      <label>CLIP Skip</label>
-      <input type="number" value="1" />
-    </div>
-    <div class="form-block">
-      <label>VAE</label>
-      <input type="text" value="blessed" />
-    </div>
-    <div class="form-block">
-      <label>Quality Boost</label>
-      <input type="checkbox" checked />
-    </div>
-  </div>
-
-  <button class="start-button">Start Drawing</button>
+<div class="selected-model-display">
+  <button id="selectModelBtn">
+    <img id="selectedModelThumb" src="512x512.png" />
+    <span id="selectedModelName">Select a model</span>
+  </button>
 </div>
 
+<!-- Prompt Form -->
+<div class="prompt-box">
+  <textarea id="prompt" placeholder="Your prompt..."></textarea>
+  <textarea id="negative_prompt" placeholder="Negative prompt..."></textarea>
 
-<script>
-  async function startDrawing() {
-    const model = localStorage.getItem("selectedModel") || "Realistic Vision";
-    const prompt = document.querySelector("textarea[placeholder='What do you dream of?']").value;
-    const negative_prompt = document.querySelector("textarea[placeholder='What do you want to exclude?']").value;
-    const steps = parseInt(document.querySelector("input[type='number'][value='40']")?.value || "40");
-    const sampler = document.querySelector("input[value='Euler A']")?.value || "Euler A";
-    const cfg = parseFloat(document.querySelector("input[value='5.0']")?.value || "5.0");
-    const seed = document.querySelector("input[placeholder='Random']")?.value || null;
+  <input type="file" id="imageUpload" accept="image/*" />
 
-    const body = {
-      model,
-      prompt,
-      negative_prompt,
-      steps,
-      sampler,
-      cfg,
-      seed
-    };
+  <input type="number" id="cfg" placeholder="CFG Scale" value="7" />
+  <input type="number" id="steps" placeholder="Steps" value="30" />
+  <input type="text" id="seed" placeholder="Seed (optional)" />
 
-    const btn = document.querySelector(".start-button");
-    btn.disabled = true;
-    btn.innerText = "Generating...";
+  <select id="sampler">
+    <option>Euler A</option>
+    <option>DDIM</option>
+    <option>Heun</option>
+  </select>
 
-    try {
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-      });
+  <label><input type="checkbox" id="restore_faces" /> Restore Faces</label>
+  <label><input type="checkbox" id="hires_fix" /> High-Res Fix</label>
 
-      const data = await res.json();
-      console.log("Generation result:", data);
+  <button id="startDrawing" class="pill-button yellow">Start Drawing</button>
+</div>
 
-      if (data && data.image_url) {
-        const preview = document.createElement("img");
-        preview.src = data.image_url;
-        preview.style.maxWidth = "100%";
-        preview.style.marginTop = "1rem";
-        document.querySelector(".tool-section").appendChild(preview);
-      } else {
-        alert("No image received. Check inputs or model availability.");
-      }
-    } catch (err) {
-      console.error("API error:", err);
-      alert("Error generating image.");
-    }
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="overlay hidden">
+  <div class="loader"></div>
+  <span>Generating your image...</span>
+</div>
 
-    btn.disabled = false;
-    btn.innerText = "Start Drawing";
-  }
+<script src="model.js"></script>
+<script src="create.js"></script>
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const drawBtn = document.querySelector(".start-button");
-    if (drawBtn) {
-      drawBtn.addEventListener("click", startDrawing);
-    }
-
-    const model = localStorage.getItem("selectedModel");
-    const thumb = localStorage.getItem("selectedImage");
-    if (model) document.getElementById("modelName").innerText = model;
-    if (thumb) document.getElementById("modelThumb").src = thumb;
-  });
-</script>
 </body>
 </html>

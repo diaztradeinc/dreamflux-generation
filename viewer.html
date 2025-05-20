@@ -2,26 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DreamFlux Viewer</title>
+  <title>Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>body{margin:0;padding:0;text-align:center;}img{max-width:100%;}button{position:absolute;top:10px;}#back{left:10px;}#download{right:10px;}</style>
+  <style>
+    body { margin: 0; padding: 0; background: #111; color: #fff; font-family: sans-serif; text-align: center; }
+    #output { max-width: 100%; margin-top: 40px; }
+    .top-buttons { position: fixed; top: 10px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 20px; }
+    .btn { background: #222; color: white; border: none; padding: 10px 20px; font-size: 18px; cursor: pointer; border-radius: 10px; }
+  </style>
 </head>
 <body>
-  <button id="back">✖</button>
-  <button id="download">⬇</button>
+  <div class="top-buttons">
+    <button class="btn" onclick="window.location.href='create.html'">✖ Back</button>
+    <button class="btn" id="downloadBtn">⬇ Download</button>
+  </div>
   <img id="output" src="" />
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const url = params.get("url");
-    const img = document.getElementById("output");
-    img.src = url;
-    document.getElementById("download").onclick = () => {
-      const a = document.createElement("a");
+    const url = new URLSearchParams(window.location.search).get('url');
+    const output = document.getElementById('output');
+    output.src = url;
+    document.getElementById('downloadBtn').onclick = () => {
+      const a = document.createElement('a');
       a.href = url;
-      a.download = "dreamflux-image.jpg";
+      a.download = 'dreamflux-output.jpg';
       a.click();
     };
-    document.getElementById("back").onclick = () => window.location.href = "/create.html";
   </script>
 </body>
 </html>
