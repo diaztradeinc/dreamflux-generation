@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DreamFlux Gallery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 1rem; }
+    h1 { text-align: center; margin: 1rem auto; }
+    .tabs { display: flex; justify-content: center; margin-bottom: 2rem; }
+    .tab { background: #111; color: #0ff; border: 1px solid #444; padding: 10px 18px; margin: 0 8px; border-radius: 8px; cursor: pointer; transition: background 0.3s; }
+    .tab.active { background: #0ff; color: #000; font-weight: bold; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; }
+    .card { position: relative; background: #111; border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.2s; }
+    .card:hover { transform: scale(1.02); }
+    .card img { width: 100%; display: block; }
+    .overlay { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); padding: 0.5rem; font-size: 0.8rem; color: #0ff; max-height: 60px; overflow: hidden; }
+    .delete-btn, .star-btn { position: absolute; top: 6px; width: 28px; height: 28px; border: none; border-radius: 50%; font-weight: bold; color: #fff; cursor: pointer; z-index: 2; }
+    .delete-btn { right: 6px; background: rgba(255, 0, 0, 0.8); }
+    .star-btn { left: 6px; background: rgba(255, 215, 0, 0.8); }
+    .starred { background: rgba(255, 255, 0, 0.95) !important; color: #000; }
+    .back-btn, .export-btn, .import-btn, .zip-btn { position: fixed; top: 1rem; background: #0ff; color: #000; padding: 10px 16px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+    .back-btn { left: 1rem; }
+    .import-btn { right: 260px; }
+    .export-btn { right: 140px; }
+    .zip-btn { right: 1rem; }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="window.location.href='create.html'">Back</button>
+  <button class="import-btn" onclick="document.getElementById('importFile').click()">Import</button>
+  <button class="export-btn" onclick="exportGallery()">Export</button>
+  <button class="zip-btn" onclick="downloadZip()">Download ZIP</button>
+  <input type="file" id="importFile" accept="application/json" style="display:none" />
+  <h1>Image Gallery</h1>
+  <div class="tabs">
+    <button class="tab active" onclick="setTab('all')" id="tab-all">All</button>
+    <button class="tab" onclick="setTab('favorites')" id="tab-favorites">Favorites</button>
+  </div>
+  <div class="grid" id="gallery"></div>
+
+  <script>
+    const gallery = document.getElementById('gallery');
+    let history = JSON.parse(localStorage.getItem('dreamflux-history') || '[]');
+    let currentTab = 'all';
+
+    function setTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      renderGallery();
+    }
+
+    function toggleStar(item) {
+      item.favorite = !item.favorite;
+      localStorage.setItem('dreamflux-history', JSON.stringify(history));
+      renderGallery();
+    }
+
+    function renderGallery() {
+      gallery.innerHTML = '';
+      const filtered = currentTab === 'favorites' ? history.filter(i => i.favorite) : history;
+
+      if (filtered.length === 0) {
+        gallery.innerHTML = '<p style="text-align:center;width:100%;">No images found.</p>';
+        return;
+      }
+
+      filtered.slice().reverse().forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const image = document.createElement('img');
+        image.src = item.image_url;
+        image.alt = "Generated Image";
+
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay';
+        overlay.innerHTML = `<div><strong>Model:</strong> ${item.model}</div><div><strong>Prompt:</strong> ${item.prompt.slice(0, 30)}...</div>`;
+
+        const del = document.createElement('button');
+        del.className = 'delete-btn';
+        del.innerText = '×';
+        del.onclick = (e) => {
+          e.stopPropagation();
+          const idx = history.findIndex(h => h.image_url === item.image_url);
+          if (idx !== -1) {
+            history.splice(idx, 1);
+            localStorage.setItem('dreamflux-history', JSON.stringify(history));
+            renderGallery();
+          }
+        };
+
+        const star = document.createElement('button');
+        star.className = 'star-btn';
+        star.innerText = '★';
+        if (item.favorite) star.classList.add('starred');
+        star.onclick = (e) => {
+          e.stopPropagation();
+          toggleStar(item);
+        };
+
+        card.appendChild(star);
+        card.appendChild(del);
+        card.appendChild(image);
+        card.appendChild(overlay);
+        card.onclick = () => {
+          window.location.href = `/viewer.html?url=${encodeURIComponent(item.image_url)}`;
+        };
+
+        gallery.appendChild(card);
+      });
+    }
+
+    function exportGallery() {
+      const blob = new Blob([JSON.stringify(history, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'dreamflux-history.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    document.getElementById('importFile').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const imported = JSON.parse(event.target.result);
+          let count = 0;
+          imported.forEach(entry => {
+            if (!history.find(h => h.image_url === entry.image_url)) {
+              history.push(entry);
+              count++;
+            }
+          });
+          localStorage.setItem('dreamflux-history', JSON.stringify(history));
+          alert(`${count} new items imported.`);
+          renderGallery();
+        } catch (err) {
+          alert("Invalid file format.");
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    async function downloadZip() {
+      const zip = new JSZip();
+      const images = currentTab === 'favorites' ? history.filter(i => i.favorite) : history;
+      if (!images.length) return alert("No images to download.");
+
+      for (let i = 0; i < images.length; i++) {
+        const file = images[i];
+        try {
+          const res = await fetch(file.image_url);
+          const blob = await res.blob();
+          zip.file(`image_${i + 1}.jpg`, blob);
+        } catch (err) {
+          console.warn("Failed to fetch image:", file.image_url);
+        }
+      }
+
+      const content = await zip.generateAsync({ type: "blob" });
+      const url = URL.createObjectURL(content);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = "dreamflux-gallery.zip";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    renderGallery();
+  </script>
+</body>
+</html>
