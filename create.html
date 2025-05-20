@@ -8,13 +8,14 @@
 </head>
 <body>
 
+<!-- Top Navigation -->
 <div class="navbar">
-  <!-- simplified navigation placeholder -->
-  <a href="create.html" class="nav-item">Create</a>
-  <a href="profile.html" class="nav-item">Profile</a>
-  <a href="settings.html" class="nav-item">Settings</a>
+  <a href="create.html">Create</a>
+  <a href="profile.html">Profile</a>
+  <a href="settings.html">Settings</a>
 </div>
 
+<!-- Category Buttons -->
 <div class="category-tabs">
   <button class="category-btn" data-category="sd15">SD 1.5</button>
   <button class="category-btn" data-category="sdxl">SDXL</button>
@@ -22,6 +23,7 @@
   <button class="category-btn" data-category="sd3">SD 3.5</button>
 </div>
 
+<!-- Model Picker Modal -->
 <div id="modelPopup" class="model-popup hidden">
   <div class="popup-header">
     <span>Select a Model</span>
@@ -30,15 +32,19 @@
   <div id="modelGrid" class="model-grid"></div>
 </div>
 
+<!-- Prompt Area -->
 <section class="prompt-form">
   <label>Prompt</label>
-  <textarea id="prompt" placeholder="Describe your dream image..."></textarea>
+  <textarea id="prompt" placeholder="Describe your image..."></textarea>
 
   <label>Negative Prompt</label>
-  <textarea id="negative_prompt" placeholder="Things to exclude..."></textarea>
+  <textarea id="negative_prompt" placeholder="What to exclude..."></textarea>
+
+  <label>Upload Image (optional)</label>
+  <input type="file" id="imageUpload" accept="image/*" />
 
   <label>CFG</label>
-  <input type="number" id="cfg" value="7" />
+  <input type="number" id="cfg" value="7.5" />
 
   <label>Steps</label>
   <input type="number" id="steps" value="30" />
@@ -51,14 +57,15 @@
   </select>
 
   <label>Seed</label>
-  <input id="seed" placeholder="Leave blank for random" />
+  <input id="seed" placeholder="Random" />
 
   <label><input type="checkbox" id="restore_faces"> Restore Faces</label>
   <label><input type="checkbox" id="hires_fix"> High-Res Fix</label>
 
-  <button id="startDrawing">Start Drawing</button>
+  <button id="startDrawing" class="pill-button">Start Drawing</button>
 </section>
 
+<!-- Model Display -->
 <div class="selected-model">
   <img id="selectedModelThumb" src="" />
   <span id="selectedModelName">No model selected</span>
