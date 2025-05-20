@@ -8,39 +8,40 @@
 </head>
 <body>
 
-<!-- Header & Navigation -->
-<header>
-  <h1>DreamFlux</h1>
-</header>
-
-<!-- Category Tabs -->
-<div id="categoryTabs" class="scrolling-tabs">
-  <button class="tab active" data-category="sd15">SD 1.5</button>
-  <button class="tab" data-category="sdxl">SDXL</button>
-  <button class="tab" data-category="flux">Flux</button>
-  <button class="tab" data-category="sd3">SD 3.5</button>
+<div class="navbar">
+  <!-- simplified navigation placeholder -->
+  <a href="create.html" class="nav-item">Create</a>
+  <a href="profile.html" class="nav-item">Profile</a>
+  <a href="settings.html" class="nav-item">Settings</a>
 </div>
 
-<!-- Model Popup Panel -->
-<div id="modelPopup" class="popup hidden">
-  <button class="close-popup">×</button>
-  <h3>Select Model</h3>
-  <div class="model-grid" id="modelGrid"></div>
+<div class="category-tabs">
+  <button class="category-btn" data-category="sd15">SD 1.5</button>
+  <button class="category-btn" data-category="sdxl">SDXL</button>
+  <button class="category-btn" data-category="flux">Flux</button>
+  <button class="category-btn" data-category="sd3">SD 3.5</button>
 </div>
 
-<!-- Prompt Form -->
-<section>
+<div id="modelPopup" class="model-popup hidden">
+  <div class="popup-header">
+    <span>Select a Model</span>
+    <button class="close-popup">×</button>
+  </div>
+  <div id="modelGrid" class="model-grid"></div>
+</div>
+
+<section class="prompt-form">
   <label>Prompt</label>
-  <textarea id="prompt" rows="2" placeholder="Describe your image..."></textarea>
+  <textarea id="prompt" placeholder="Describe your dream image..."></textarea>
 
   <label>Negative Prompt</label>
-  <textarea id="negativePrompt" rows="2" placeholder="What to avoid..."></textarea>
+  <textarea id="negative_prompt" placeholder="Things to exclude..."></textarea>
 
-  <label>CFG Scale</label>
-  <input id="cfg" type="number" step="0.5" min="1" max="20" value="7.5">
+  <label>CFG</label>
+  <input type="number" id="cfg" value="7" />
 
   <label>Steps</label>
-  <input id="steps" type="number" value="30" min="1" max="100">
+  <input type="number" id="steps" value="30" />
 
   <label>Sampler</label>
   <select id="sampler">
@@ -50,18 +51,17 @@
   </select>
 
   <label>Seed</label>
-  <input id="seed" placeholder="Random">
+  <input id="seed" placeholder="Leave blank for random" />
 
   <label><input type="checkbox" id="restore_faces"> Restore Faces</label>
-  <label><input type="checkbox" id="hires_fix"> High Resolution Fix</label>
+  <label><input type="checkbox" id="hires_fix"> High-Res Fix</label>
 
   <button id="startDrawing">Start Drawing</button>
 </section>
 
-<!-- Selected Model Display -->
-<div id="selectedModelDisplay" class="selected-model">
-  <img id="selectedModelThumb" src="" alt="Selected Model" />
-  <span id="selectedModelName">Model: None</span>
+<div class="selected-model">
+  <img id="selectedModelThumb" src="" />
+  <span id="selectedModelName">No model selected</span>
 </div>
 
 <script src="model.js"></script>
