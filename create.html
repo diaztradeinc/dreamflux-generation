@@ -123,11 +123,12 @@
     btn.innerText = "Generating...";
 
     try {
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      });
+  const res = await fetch("https://dreamflux-pro-backend-production.up.railway.app/api/generate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+
       const data = await res.json();
       if (data.image_url) {
         window.location.href = "/viewer.html?url=" + encodeURIComponent(data.image_url);
