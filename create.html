@@ -2,73 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DreamFlux Create</title>
+  <title>DreamFlux - Create</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="white-theme">
 
-<!-- Top Navigation -->
-<div class="navbar">
+<nav class="navbar">
   <a href="create.html">Create</a>
   <a href="profile.html">Profile</a>
   <a href="settings.html">Settings</a>
+</nav>
+
+<div class="tab-bar">
+  <button class="tab-btn" data-category="sd15">SD 1.5</button>
+  <button class="tab-btn" data-category="sdxl">SDXL</button>
+  <button class="tab-btn" data-category="flux">Flux</button>
+  <button class="tab-btn" data-category="sd3">SD 3.5</button>
 </div>
 
-<!-- Category Buttons -->
-<div class="category-tabs">
-  <button class="category-btn" data-category="sd15">SD 1.5</button>
-  <button class="category-btn" data-category="sdxl">SDXL</button>
-  <button class="category-btn" data-category="flux">Flux</button>
-  <button class="category-btn" data-category="sd3">SD 3.5</button>
-</div>
-
-<!-- Model Picker Modal -->
-<div id="modelPopup" class="model-popup hidden">
-  <div class="popup-header">
+<!-- Model Selection Modal -->
+<div id="modelModal" class="modal hidden">
+  <div class="modal-header">
     <span>Select a Model</span>
-    <button class="close-popup">×</button>
+    <button id="closeModelModal">×</button>
   </div>
-  <div id="modelGrid" class="model-grid"></div>
+  <div id="modelCards" class="model-grid"></div>
 </div>
 
-<!-- Prompt Area -->
-<section class="prompt-form">
-  <label>Prompt</label>
-  <textarea id="prompt" placeholder="Describe your image..."></textarea>
+<div class="selected-model-display">
+  <button id="selectModelBtn">
+    <img id="selectedModelThumb" src="512x512.png" />
+    <span id="selectedModelName">Select a model</span>
+  </button>
+</div>
 
-  <label>Negative Prompt</label>
-  <textarea id="negative_prompt" placeholder="What to exclude..."></textarea>
+<!-- Prompt Form -->
+<div class="prompt-box">
+  <textarea id="prompt" placeholder="Your prompt..."></textarea>
+  <textarea id="negative_prompt" placeholder="Negative prompt..."></textarea>
 
-  <label>Upload Image (optional)</label>
   <input type="file" id="imageUpload" accept="image/*" />
 
-  <label>CFG</label>
-  <input type="number" id="cfg" value="7.5" />
+  <input type="number" id="cfg" placeholder="CFG Scale" value="7" />
+  <input type="number" id="steps" placeholder="Steps" value="30" />
+  <input type="text" id="seed" placeholder="Seed (optional)" />
 
-  <label>Steps</label>
-  <input type="number" id="steps" value="30" />
-
-  <label>Sampler</label>
   <select id="sampler">
     <option>Euler A</option>
     <option>DDIM</option>
     <option>Heun</option>
   </select>
 
-  <label>Seed</label>
-  <input id="seed" placeholder="Random" />
+  <label><input type="checkbox" id="restore_faces" /> Restore Faces</label>
+  <label><input type="checkbox" id="hires_fix" /> High-Res Fix</label>
 
-  <label><input type="checkbox" id="restore_faces"> Restore Faces</label>
-  <label><input type="checkbox" id="hires_fix"> High-Res Fix</label>
+  <button id="startDrawing" class="pill-button yellow">Start Drawing</button>
+</div>
 
-  <button id="startDrawing" class="pill-button">Start Drawing</button>
-</section>
-
-<!-- Model Display -->
-<div class="selected-model">
-  <img id="selectedModelThumb" src="" />
-  <span id="selectedModelName">No model selected</span>
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="overlay hidden">
+  <div class="loader"></div>
+  <span>Generating your image...</span>
 </div>
 
 <script src="model.js"></script>
