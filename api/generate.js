@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   const apiKey = process.env.MODELSLAB_API_KEY;
 
   try {
-    const response = await axios.post("https://api.modelslab.com/v6/realtime/text2img", {
+    const response = await axios.post("https://api.modelslab.dev/v6/realtime/text2img", {
       key: apiKey,
       model: body.model,
       prompt: body.prompt,
